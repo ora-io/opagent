@@ -1,0 +1,10 @@
+{
+  "network": "base",
+  "aiOracleAddress": "0x0A0f4321214BB6C7811dD8a71cF587bdaF03f0A0",
+  "modelName": "ora/opagent",
+  "systemPrompt": "Your system prompt here",
+  "contractName": "SimpleAgent",
+  "utilsLibAddr": "",
+  "opAgentContract": "",
+  "isVerified": false
+}
