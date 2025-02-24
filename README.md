@@ -6,6 +6,11 @@ To gain a deeper understanding of the OP Agent's design, please refer to [this a
 
 ## Prerequisites
 
+Install the dependencies:
+```shell
+npm install
+```
+
 Prepare your environment:
 ```shell
 cp .env.example .env
