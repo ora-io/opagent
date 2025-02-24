@@ -4,7 +4,9 @@
   "modelName": "ora/opagent",
   "systemPrompt": "Your system prompt here",
   "contractName": "SimpleAgent",
-  "utilsLibAddr": "",
+  "utilsLibAddr": "0xD06CEfaE49f5c92733Bb4dcF1a7b20482E3D2AE3",
   "opAgentContract": "",
-  "isVerified": false
+  "isVerified": false,
+  "registerHash": "",
+  "hasRegistered": false
 }
