@@ -69,6 +69,8 @@ contract TransferAgent is OPAgent {
 
 There are some examples of opAgent shown in `contracts/examples`.
 
+When you customize your opAgent, you need to specify the contract name in the `contractName` field of the `deploy-config.json` file. The contract name should be the same as the file name of the solidity contract. And the solidity contract should be located in the `contracts/examples` folder.
+
 ## Deploy your opAgent
 
 Prepare the configuration file `deploy-config.json` in the `config` folder.

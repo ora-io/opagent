@@ -92,6 +92,7 @@ async function verifyContract() {
         libraries: {
           Utils: config.utilsLibAddr,
         },
+        contract: "contracts/examples/" + config.contractName + ".sol:" + config.contractName,
       });
       console.log("Contract verified successfully!");
       config.isVerified = true;
