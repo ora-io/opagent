@@ -17,17 +17,47 @@ cp .env.example .env
 ```
 Then, update the `.env` file with your own values.
 ```shell
-PRIVATE_KEY=xx
-BASE_MAINNET_RPC=xx
-ETHERSCAN_API_KEY=xx
-ORA_API_KEY=xx
+PRIVATE_KEY=3d59c...
+BASE_MAINNET_RPC=https://...
+ETHERSCAN_API_KEY=XPP8...
+ORA_API_KEY=BASE:5FH4...
 ```
 You can get your `ORA_API_KEY` from [here](https://rms.ora.io/).
 
 ## Customize your opAgent
 
-Each opAgent corresponds to a smart contract on the blockchain. Take `contracts/examples/SimpleAgent.sol` as an example. 
+Each opAgent corresponds to a smart contract on the blockchain.
+
+### Create your agent
+
+Create a copy of sample agent and name it "NewAgent".
+```shell
+cp contracts/examples/SimpleAgent.sol contracts/examples/NewAgent.sol
+```
+
+Inside `contracts/examples/NewAgent.sol`, change name of contract into `NewAgent` or any other name.
+
+```js
+contract NewAgent is OPAgent {
+
+  /// @notice Initialize the contract, binding it to a specified AIOracle contract
+  constructor(IAIOracle _aiOracle, string memory _modelName, string memory _systemPrompt) OPAgent(_aiOracle, _modelName, _systemPrompt) {}
+
+}
+```
+
+There are some examples of opAgent shown in `contracts/examples`.
+
+Requirements:
+- You need to specify the contract name in the `contractName` field of the `deploy-config.json` file.
+- The contract name should be the same as the file name of the solidity contract and `contractName` of `deploy-config.json` file.
+- The solidity contract should be located in the `contracts/examples` folder.
+
+### Customization 
+
+Take `contracts/examples/SimpleAgent.sol` as an example. 
 By inheriting from `OPAgent.sol`, you can get a very simple opAgent onchain.
+
 ```js
 contract SimpleAgent is OPAgent {
 
@@ -36,6 +66,7 @@ contract SimpleAgent is OPAgent {
 
 }
 ```
+
 In op agent framework, we support highly customized onchain actions. So you can customize your op agent onchain action by writing any solidity function with the `onlyOPAgentCallback` modifier. In this way, we can support various of onchain actions of the opAgent such as trading on DEX, transfering token, and even deploying a new contract.
 
 Take `contracts/examples/TransferAgent.sol` as an example. It inherits from `OPAgent.sol` and implements the `transferETH` function. When the opAgent calls the `transferETH` function, it will transfer the specified amount of ETH to the specified address.
@@ -71,11 +102,6 @@ contract TransferAgent is OPAgent {
 }
 ```
 
-
-There are some examples of opAgent shown in `contracts/examples`.
-
-When you customize your opAgent, you need to specify the contract name in the `contractName` field of the `deploy-config.json` file. The contract name should be the same as the file name of the solidity contract. And the solidity contract should be located in the `contracts/examples` folder.
-
 ## Deploy your opAgent
 
 Prepare the configuration file `deploy-config.json` in the `config` folder.
@@ -83,6 +109,7 @@ Prepare the configuration file `deploy-config.json` in the `config` folder.
 ```shell
 cp config/deploy-config.example.json config/deploy-config.json
 ```
+
 Fill in the `deploy-config.json` file with your own values.
 ```shell
 {
@@ -106,7 +133,7 @@ Fill in the `deploy-config.json` file with your own values.
 - opAgentContract: the address of your opAgent contract. If you have not deployed it, you can leave it empty as "". After deployment, we will automatically update it.
 - isVerified: whether the opAgent is verified. If you not sure whether it is verified, you should leave it as false.
 
-After the configuration file is prepared, you can create your opAgent by running the following command:
+After the configuration file is prepared, to deploy your agent, you can create your opAgent by running the following command:
 ```shell
 npx hardhat run scripts/createAgent.ts 
 ```
@@ -133,12 +160,20 @@ When the opAgent responds with function calling, it will trigger the customized 
 
 Here is a simple script for you to chat with your opAgent using OAO:
 ```shell
-PROMPT="hello" npx hardhat run scripts/onchainChat.ts 
+PROMPT="who are u" npx hardhat run scripts/onchainChat.ts 
 ```
 
 ## Off-chain chat
 
 The off-chain chatting functionality is supported by RMS (Resilient Model Services). You can learn more about RMS from [here](https://rms.ora.io/). For the off-chain chatting, you can get the response by the following command:
+
+Here is a simple script for you to chat with your opAgent through RMS:
+```shell
+npx ts-node ./scripts/offchainChat.ts "who are you?"
+```
+
+After exporting environment variables, you can also directly chat with your agent with curl:
+
 ```shell
 curl -X POST "https://api.ora.io/v1/agents/chat" \
   -H "Authorization: Bearer $ORA_API_KEY" \
@@ -149,8 +184,4 @@ curl -X POST "https://api.ora.io/v1/agents/chat" \
     "registerHash": $registerHash,
     "contractAddress": $opAgentContract
   }'
-```
-Here is a simple script for you to chat with your opAgent through RMS:
-```shell
-npx ts-node ./scripts/offchainChat.ts "who are you?"
 ```
