@@ -63,6 +63,9 @@ async function sendChatRequest() {
 
     // Log the response
     console.log("messages:", response.data.choices[0].message.content);
+    
+    // console.log("response:", response.data);
+    console.log("function call:", response.data.tool_calls);
   } catch (error) {
     console.error("Error sending request:", error);
     process.exit(1);

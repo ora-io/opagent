@@ -180,7 +180,15 @@ async function main() {
   // Deploy or use existing OPAgent contract
   const opAgentContract = await deployOPAgent(utilsLibAddr);
 
+  // Wait 30 seconds to allow the contract to be verified
+  console.log("Waiting 30 seconds for contract to be verified...");
+  await new Promise((resolve) => setTimeout(resolve, 30000));
+
   await verifyContract();
+
+  // Wait 10 seconds to allow the contract to be registered
+  console.log("Waiting 10 seconds for contract to be registered...");
+  await new Promise((resolve) => setTimeout(resolve, 10000));
 
   await register();
 }
