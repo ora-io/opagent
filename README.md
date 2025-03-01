@@ -104,6 +104,10 @@ contract TransferAgent is OPAgent {
 
 ## Deploy your opAgent
 
+> For every deployment and onchain / offchain chat interaction, the address in your `.env` file (may not be identical to RMS api address) will be charged 0.25 $ORA for fee.
+
+Currently, opAgent framework supports Base, and deployment of opAgents will also be on Base.
+
 Prepare the configuration file `deploy-config.json` in the `config` folder.
 
 ```shell
